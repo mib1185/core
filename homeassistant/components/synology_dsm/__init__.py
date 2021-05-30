@@ -52,6 +52,7 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
+from homeassistant.util.dt import utcnow
 
 from .const import (
     CONF_DEVICE_TOKEN,
@@ -270,13 +271,17 @@ async def async_setup_entry(  # noqa: C901
             }
         }
 
-    async def async_coordinator_update_data_central() -> None:
+    async def async_coordinator_update_data_central() -> dict[str, Any]:
         """Fetch all device and sensor data from api."""
         try:
             await api.async_update()
         except Exception as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
-        return None
+
+        data: dict[str, Any] = {
+            "last_boot": utcnow() - timedelta(seconds=api.information.uptime)
+        }
+        return data
 
     async def async_coordinator_update_data_switches() -> dict[
         str, dict[str, Any]
@@ -322,6 +327,11 @@ async def async_setup_entry(  # noqa: C901
         update_method=async_coordinator_update_data_switches,
         update_interval=timedelta(seconds=30),
     )
+
+    coordinator_central: DataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
+        COORDINATOR_CENTRAL
+    ]
+    await coordinator_central.async_refresh()
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
 
@@ -437,7 +447,6 @@ class SynoApi:
         self._async_setup_api_requests()
 
         await self._hass.async_add_executor_job(self._fetch_device_configuration)
-        await self.async_update()
 
     @callback
     def subscribe(self, api_key: str, unique_id: str) -> Callable[[], None]:

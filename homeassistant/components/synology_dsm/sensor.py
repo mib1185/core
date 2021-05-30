@@ -1,7 +1,7 @@
 """Support for Synology DSM sensors."""
 from __future__ import annotations
 
-from datetime import timedelta
+from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import SensorEntity
@@ -18,7 +18,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.temperature import display_temp
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from homeassistant.util.dt import utcnow
 
 from . import SynoApi, SynologyDSMBaseEntity, SynologyDSMDeviceEntity
 from .const import (
@@ -183,7 +182,7 @@ class SynoDSMInfoSensor(SynoDSMSensor, SensorEntity):
         if self.entity_type == "uptime":
             # reboot happened or entity creation
             if self._previous_uptime is None or self._previous_uptime > attr:
-                last_boot = utcnow() - timedelta(seconds=attr)
+                last_boot: datetime = self.coordinator.data["last_boot"]
                 self._last_boot = last_boot.replace(microsecond=0).isoformat()
 
             self._previous_uptime = attr
