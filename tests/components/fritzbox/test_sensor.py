@@ -34,10 +34,10 @@ async def test_setup(hass: HomeAssistant, fritz: Mock):
         hass, MOCK_CONFIG[FB_DOMAIN][CONF_DEVICES][0], ENTITY_ID, device, fritz
     )
 
-    state = hass.states.get(ENTITY_ID)
+    state = hass.states.get(f"{ENTITY_ID}_temperature")
     assert state
     assert state.state == "1.23"
-    assert state.attributes[ATTR_FRIENDLY_NAME] == "fake_name"
+    assert state.attributes[ATTR_FRIENDLY_NAME] == "fake_name Temperature"
     assert state.attributes[ATTR_STATE_DEVICE_LOCKED] == "fake_locked_device"
     assert state.attributes[ATTR_STATE_LOCKED] == "fake_locked"
     assert state.attributes[ATTR_UNIT_OF_MEASUREMENT] == TEMP_CELSIUS

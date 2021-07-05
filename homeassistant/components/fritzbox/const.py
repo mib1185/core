@@ -26,4 +26,4 @@ DOMAIN: Final = "fritzbox"
 
 LOGGER: Final[logging.Logger] = logging.getLogger(__package__)
 
-PLATFORMS: Final[list[str]] = ["binary_sensor", "climate", "switch", "sensor"]
+PLATFORMS: Final[list[str]] = ["binary_sensor", "climate", "switch", "sensor", "light"]

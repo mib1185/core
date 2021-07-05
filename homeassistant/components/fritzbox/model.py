@@ -1,7 +1,9 @@
 """Models for the AVM FRITZ!SmartHome integration."""
 from __future__ import annotations
 
-from typing import TypedDict
+from typing import Tuple, TypedDict
+
+HsColor = Tuple[int, int, int]
 
 
 class EntityInfo(TypedDict):

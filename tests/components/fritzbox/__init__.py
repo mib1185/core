@@ -55,6 +55,7 @@ class FritzDeviceBinarySensorMock(Mock):
     has_switch = False
     has_temperature_sensor = False
     has_thermostat = False
+    has_lightbulb = False
     manufacturer = "fake_manufacturer"
     name = "fake_name"
     present = True
@@ -77,6 +78,7 @@ class FritzDeviceClimateMock(Mock):
     has_switch = False
     has_temperature_sensor = False
     has_thermostat = True
+    has_lightbulb = False
     holiday_active = "fake_holiday"
     lock = "fake_locked"
     manufacturer = "fake_manufacturer"
@@ -99,6 +101,7 @@ class FritzDeviceSensorMock(Mock):
     has_switch = False
     has_temperature_sensor = True
     has_thermostat = False
+    has_lightbulb = False
     lock = "fake_locked"
     manufacturer = "fake_manufacturer"
     name = "fake_name"
@@ -118,11 +121,33 @@ class FritzDeviceSwitchMock(Mock):
     has_switch = True
     has_temperature_sensor = True
     has_thermostat = False
+    has_lightbulb = False
     switch_state = "fake_state"
     lock = "fake_locked"
     manufacturer = "fake_manufacturer"
     name = "fake_name"
     power = 5678
+    present = True
+    productname = "fake_productname"
+    temperature = 135
+
+
+class FritzDeviceLightMock(Mock):
+    """Mock of a AVM Fritz!Box light device."""
+
+    ain = "fake_ain"
+    device_lock = "fake_locked_device"
+    fw_version = "1.2.3"
+    has_alarm = False
+    has_switch = False
+    has_temperature_sensor = False
+    has_thermostat = False
+    has_lightbulb = True
+    state = "fake_state"
+    lock = "fake_locked"
+    manufacturer = "fake_manufacturer"
+    name = "fake_name"
+    hue = 5678
     present = True
     productname = "fake_productname"
     temperature = 135
